@@ -37,7 +37,7 @@ function findSafestPath(dream) {
   // Crear una matriz dp del mismo tamaño que dream
   const dp = Array.from({ length: n }, () => Array(m).fill(Infinity));
   //   dp[0][0] = dream[0][0]; // Inicializamos el punto de partida
-  console.log("dp::: ", dp, "\n");
+
   // Llenar la primera fila
   for (let j = 1; j < m; j++) {
     dp[0][j] = dp[0][j - 1] + dream[0][j];
@@ -55,10 +55,9 @@ function findSafestPath(dream) {
       console.log("dp[i][j]==", dp[i][j]);
     }
   }
-  console.log("dp2::: ", dp, "\n");
 
   // El resultado está en la esquina inferior derecha
   return dp[n - 1][m - 1];
 }
 
-console.log(findSafestPath2(dream2)); // Devuelve 7
+console.log(findSafestPath(dream2)); // Devuelve 7
