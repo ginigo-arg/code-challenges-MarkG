@@ -14,7 +14,7 @@
 // organizeShoes(shoes)
 // // [38, 42]
 
-const shoes2 = [
+const shoes2: Shoe[] = [
   { type: "I", size: 38 },
   { type: "R", size: 38 },
   { type: "I", size: 38 },
@@ -23,7 +23,7 @@ const shoes2 = [
 ];
 // [38, 38]
 
-const shoes3 = [
+const shoes3: Shoe[] = [
   { type: "I", size: 38 },
   { type: "R", size: 36 },
   { type: "R", size: 42 },
@@ -48,10 +48,11 @@ function organizeShoes(shoes: Shoe[]): number[] {
     return acc;
   }, {} as Record<number, { I: number; R: number }>);
 
-  const pairedSizes = [];
+  const pairedSizes: number[] = [];
   for (const [size, counts] of Object.entries(sizeCounts)) {
     const pairs = Math.min(counts.I, counts.R);
     for (let i = 0; i < pairs; i++) {
+      //disable-next-line
       pairedSizes.push(Number(size));
     }
   }
