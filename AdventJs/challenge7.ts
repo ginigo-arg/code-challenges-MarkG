@@ -1,56 +1,53 @@
-// It's time to select the fastest reindeer for Santa's journeys! 🦌🎄
-// Santa Claus has organized exciting reindeer races to determine which ones are in the best shape.
-// Your task is to display each reindeer's progress on a snow track in isometric format.
-// The information you receive:
-// indices: An array of integers representing each reindeer's progress on the track:
-// 0: The lane is empty.
-// Positive number: The reindeer's current position from the beginning of the track.
-// Negative number: The reindeer's current position from the end of the track.
-// length: The length of each lane.
-// Return a string representing the race track:
-// Each lane has exactly length positions filled with snow (~).
-// Each reindeer is represented with the letter r.
-// Lanes are numbered at the end with /1, /2, etc.
-// The view is isometric, so the lower lanes are shifted to the right.
-// Examples:
-// drawRace([0, 5, -3], 10)
-// /*
-//   ~~~~~~~~~~ /1
-//  ~~~~~r~~~~ /2
-// ~~~~~~~r~~ /3
-// */
+// The grinch 👹 has passed through Santa Claus's workshop! And what a mess he has made. He has changed the order of some packages, so shipments cannot be made.
+// Luckily, the elf Pheralb has detected the pattern the grinch followed to jumble them. He has written the rules that we must follow to reorder the packages. The instructions are as follows:
+// You will receive a string containing letters and parentheses.
+// Every time you find a pair of parentheses, you need to reverse the content within them.
+// If there are nested parentheses, solve the innermost ones first.
+// Return the resulting string with parentheses removed, but with the content correctly reversed.
+// He left us some examples:
+// fixPackages('a(cb)de')
+// // ➞ "abcde"
+// // We reverse "cb" inside the parentheses
 
-// drawRace([2, -1, 0, 5], 8)
-// /*
-//    ~~r~~~~~ /1
-//   ~~~~~~~r /2
-//  ~~~~~~~~ /3
-// ~~~~~r~~ /4
-// */
+// fixPackages('a(bc(def)g)h')
+// // ➞ "agdefcbh"
+// // 1st we reverse "def" → "fed", then we reverse "bcfedg" → "gdefcb"
 
-// drawRace([3, 7, -2], 12)
+// fixPackages('abc(def(gh)i)jk')
+// // ➞ "abcighfedjk"
+// // 1st we reverse "gh" → "hg", then "defhgi" → "ighfed"
 
-// function snow(arg0: number) {
-//     throw new Error("Function not implemented.")
-// }
-// /*
-//   ~~~r~~~~~~~~ /1
-//  ~~~~~~~r~~~~ /2
-// ~~~~~~~~~~r~ /3
-// */
+// fixPackages('a(b(c))e')
+// // ➞ "acbe"
+// // 1st we reverse "c" → "c", then "bc" → "cb"
 
-function drawRace(indices: number[], length: number): string {
-  const lanes = indices.map((index, i) => {
-    const lane = Array(length).fill("~");
-    const space = " ".repeat(indices.length - i - 1);
-    if (index > 0) {
-      lane[index] = "r";
-    } else if (index < 0) {
-      lane[length + index] = "r";
+function fixPackages(packages: string): string {
+  const stack = [];
+
+  for (let char of packages) {
+    if (char === ")") {
+      // Build the string inside the current parentheses
+      let temp = "";
+      console.log("stack", stack);
+      console.log("stack[stack.length]", stack.length);
+      while (stack.length && stack[stack.length - 1] !== "(") {
+        temp = stack.pop() + temp;
+      }
+
+      // Remove the opening parenthesis '('
+      stack.pop();
+      // Reverse the content and push back to stack
+      for (let reversedChar of temp.split("").reverse()) {
+        stack.push(reversedChar);
+      }
+    } else {
+      // Push current character to stack
+      stack.push(char);
     }
-    return `${space}${lane.join("")} /${i + 1}`;
-  });
-  return lanes.join("\n");
+  }
+
+  // Return the final result as a string
+  return stack.join("");
 }
 
-console.log(drawRace([0, 5, -3], 10));
+console.log("fixPackages(): ", fixPackages("abc(def(gh)i)jk"));
