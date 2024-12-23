@@ -1,87 +1,56 @@
-// The elves are playing with a magical train 🚂 that carries gifts. This train moves on a board represented by an array of strings.
-// The train consists of an engine (@), followed by its carriages (o), and must collect magical fruits (*) which serve as fuel. The movement of the train follows these rules:
-// You will receive two parameters board and mov.
-// board is an array of strings that represents the board:
-// @ is the train's engine.
-// o are the train's carriages.
-// * is a magical fruit.
-// · are empty spaces.
-// mov is a string that indicates the next movement of the train from the train's head @:
-// 'L': left
-// 'R': right
-// 'U': up
-// 'D': down.
-// With this information, you must return a string:
-// 'crash': If the train crashes into the edges of the board or itself.
-// 'eat': If the train collects a magical fruit (*).
-// 'none': If it moves without crashing or collecting any magical fruit.
-// Example:
-// const board = [
-//   '·····',
-//   '*····',
-//   '@····',
-//   'o····',
-//   'o····'
-// ]
+// It's time to select the fastest reindeer for Santa's journeys! 🦌🎄
+// Santa Claus has organized exciting reindeer races to determine which ones are in the best shape.
+// Your task is to display each reindeer's progress on a snow track in isometric format.
+// The information you receive:
+// indices: An array of integers representing each reindeer's progress on the track:
+// 0: The lane is empty.
+// Positive number: The reindeer's current position from the beginning of the track.
+// Negative number: The reindeer's current position from the end of the track.
+// length: The length of each lane.
+// Return a string representing the race track:
+// Each lane has exactly length positions filled with snow (~).
+// Each reindeer is represented with the letter r.
+// Lanes are numbered at the end with /1, /2, etc.
+// The view is isometric, so the lower lanes are shifted to the right.
+// Examples:
+// drawRace([0, 5, -3], 10)
+// /*
+//   ~~~~~~~~~~ /1
+//  ~~~~~r~~~~ /2
+// ~~~~~~~r~~ /3
+// */
 
-// [1][0] = "*";   // magical fruit
-// [2][0] = "@";
-// [3][0] = "o";
-// [4][0] = "o";
+// drawRace([2, -1, 0, 5], 8)
+// /*
+//    ~~r~~~~~ /1
+//   ~~~~~~~r /2
+//  ~~~~~~~~ /3
+// ~~~~~r~~ /4
+// */
 
-// console.log(moveTrain(board, 'U'))
-// // ➞ 'eat'
-// // Because the train moves up and finds a magical fruit
-// UP Movement => [row-1][currentColumn] = "@";
+// drawRace([3, 7, -2], 12)
 
-// console.log(moveTrain(board, 'D'))
-// // ➞ 'crash'
-// // The train moves down and the head crashes into itself
-// DOWN Movement => [row+1][currentColumn] = "@";
+// function snow(arg0: number) {
+//     throw new Error("Function not implemented.")
+// }
+// /*
+//   ~~~r~~~~~~~~ /1
+//  ~~~~~~~r~~~~ /2
+// ~~~~~~~~~~r~ /3
+// */
 
-// console.log(moveTrain(board, 'L'))
-// // ➞ 'crash'
-// // The train moves to the left and crashes into the wall
-// LEFT Movement => [currentRow][column-1] = "@";
-
-// console.log(moveTrain(board, 'R'))
-// // ➞ 'none'
-// // The train moves to the right and there is empty space on the right
-// RIGHT Movement => [currentRow][column+1] = "@";
-
-type Board = string[];
-type Movement = "U" | "D" | "R" | "L";
-type Result = "none" | "crash" | "eat";
-
-function moveTrain(board: Board, mov: Movement): Result {
-  if (!board.join("").includes("@")) return "crash";
-  const findHeadTrain = board.findIndex((row) => row.includes("@"));
-  const HeadPosition = [findHeadTrain, board[findHeadTrain].indexOf("@")];
-
-  let nextRow = HeadPosition[0];
-  let nextCol = HeadPosition[1];
-
-  if (mov === "U") nextRow--;
-  if (mov === "D") nextRow++;
-  if (mov === "L") nextCol--;
-  if (mov === "R") nextCol++;
-
-  if (
-    nextRow < 0 ||
-    nextRow >= board.length ||
-    nextCol < 0 ||
-    nextCol >= board[0].length
-  ) {
-    return "crash";
-  }
-
-  const nextPosition = board[nextRow][nextCol];
-
-  return nextPosition === "o" ? "crash" : nextPosition === "*" ? "eat" : "none";
+function drawRace(indices: number[], length: number): string {
+  const lanes = indices.map((index, i) => {
+    const lane = Array(length).fill("~");
+    const space = " ".repeat(indices.length - i - 1);
+    if (index > 0) {
+      lane[index] = "r";
+    } else if (index < 0) {
+      lane[length + index] = "r";
+    }
+    return `${space}${lane.join("")} /${i + 1}`;
+  });
+  return lanes.join("\n");
 }
 
-const board = ["·····", "*····", "·····", "@····", "o····"];
-console.log(moveTrain(board, "R")); // ➞ 'none'
-console.log(moveTrain(board, "U")); // ➞ 'eat'
-console.log(moveTrain(board, "D")); // ➞ 'crash'
-console.log(moveTrain(board, "L")); // ➞ 'crash'
+console.log(drawRace([0, 5, -3], 10));
