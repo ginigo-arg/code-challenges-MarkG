@@ -17,13 +17,11 @@
 // // ➞ "elf-roster.csv"
 
 function decodeFilename(filename: string): string {
-  const first_ = filename.split("").findIndex((c) => c === "_");
-  const file =
-    filename.slice(first_ + 1).split(".")[0] +
-    "." +
-    filename.slice(first_).split(".")[1];
+  const first_position =
+    filename.split("").findIndex((chart) => chart === "_") + 1;
+  const segments = filename.slice(first_position).split(".");
 
-  return file;
+  return segments[0] + "." + segments[1];
 }
-decodeFilename("987654321_elf-roster.csv.tempfile");
+console.log(decodeFilename("987654321_elf-ros_ter.csv.tempfile"));
 // // ➞ "elf-roster.csv"
